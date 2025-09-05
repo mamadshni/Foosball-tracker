@@ -1,21 +1,59 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Game, PlayerId } from "../types/models";
-import { mockGames } from "../db/mock";
 import { usePlayersStore } from "./players";
 import { v4 as uuid } from "uuid";
 import { computePointsOpenSkill } from "../lib/rating/openskill";
+import { supabase } from "../lib/db/supabase";
 
 interface GamesState {
     games: Game[];
-    addGame: (game: { teamA: PlayerId[]; teamB: PlayerId[]; winnerTeam: "A" | "B" }) => void;
+    ready: boolean;
+    fetchAll: () => Promise<void>;
+    addGame: (game: { teamA: PlayerId[]; teamB: PlayerId[]; winnerTeam: "A" | "B" }) => Promise<void>;
     getGamesByPlayer: (playerId: PlayerId) => Game[];
+}
+
+type DBGame = {
+    id: string;
+    date: string;
+    team_a: string[];
+    team_b: string[];
+    winner_team: "A" | "B";
+    points_change: number;
+    per_player_deltas: Record<string, number> | null;
+};
+
+function toAppGame(g: DBGame): Game {
+    return {
+        id: g.id,
+        date: g.date,
+        teamA: g.team_a,
+        teamB: g.team_b,
+        winnerTeam: g.winner_team,
+        pointsChange: g.points_change,
+        perPlayerDeltas: g.per_player_deltas ?? undefined,
+    };
 }
 
 export const useGamesStore = create<GamesState>()(
     persist(
         (set, get) => ({
-            games: mockGames,
+            games: [],
+            ready: false,
+
+            fetchAll: async () => {
+                const { data, error } = await supabase
+                    .from("games")
+                    .select("id,date,team_a,team_b,winner_team,points_change,per_player_deltas")
+                    .order("date", { ascending: true });
+                if (!error && data) {
+                    const mapped = (data as DBGame[]).map(toAppGame);
+                    set({ games: mapped, ready: true });
+                } else {
+                    set({ ready: true });
+                }
+            },
 
             addGame: async ({ teamA, teamB, winnerTeam }) => {
                 const updatePlayer = usePlayersStore.getState().updatePlayer;
@@ -59,6 +97,16 @@ export const useGamesStore = create<GamesState>()(
                 };
 
                 set((state) => ({ games: [...state.games, newGame] }));
+                // persist
+                await supabase.from("games").insert({
+                    id: newGame.id,
+                    date: newGame.date,
+                    team_a: newGame.teamA,
+                    team_b: newGame.teamB,
+                    winner_team: newGame.winnerTeam,
+                    points_change: newGame.pointsChange,
+                    per_player_deltas: newGame.perPlayerDeltas,
+                }).then();
             },
 
             getGamesByPlayer: (playerId) =>

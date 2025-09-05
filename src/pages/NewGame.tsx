@@ -74,7 +74,6 @@ export default function NewGame() {
         setTeamA([]);
         setTeamB([]);
         setWinnerTeam(null);
-        alert("Game recorded!");
     };
 
     return (
