@@ -16,5 +16,6 @@ export interface Game {
     teamA: PlayerId[];
     teamB: PlayerId[];
     winnerTeam: "A" | "B";
-    pointsChange: number;
+    pointsChange: number; // legacy overall magnitude used in some tables
+    perPlayerDeltas?: Record<PlayerId, number>; // detailed per-player rating deltas
 }

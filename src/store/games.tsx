@@ -4,6 +4,7 @@ import type { Game, PlayerId } from "../types/models";
 import { mockGames } from "../db/mock";
 import { usePlayersStore } from "./players";
 import { v4 as uuid } from "uuid";
+import { computePoints } from "../lib/rating/points";
 
 interface GamesState {
     games: Game[];
@@ -17,36 +18,35 @@ export const useGamesStore = create<GamesState>()(
             games: mockGames,
 
             addGame: ({ teamA, teamB, winnerTeam }) => {
+                const updatePlayer = usePlayersStore.getState().updatePlayer;
+                const all = usePlayersStore.getState().players;
+
+                const teamAPlayers = teamA
+                    .map((id) => all.find((p) => p.id === id))
+                    .filter((p): p is NonNullable<typeof p> => Boolean(p))
+                    .map((p) => ({ id: p.id, rating: p.rating, gamesPlayed: p.gamesPlayed }));
+                const teamBPlayers = teamB
+                    .map((id) => all.find((p) => p.id === id))
+                    .filter((p): p is NonNullable<typeof p> => Boolean(p))
+                    .map((p) => ({ id: p.id, rating: p.rating, gamesPlayed: p.gamesPlayed }));
+
+                const { deltas, summary } = computePoints({ teamA: teamAPlayers, teamB: teamBPlayers, winnerTeam });
+
+                // Apply updates per player: rating + win/loss + gamesPlayed
                 const winners = winnerTeam === "A" ? teamA : teamB;
-                const losers = winnerTeam === "A" ? teamB : teamA;
 
-                const isDoubles = teamA.length === 2 && teamB.length === 2;
-                const pointsChange = isDoubles ? 20 : 30;
-
-                const updatePlayerStats = usePlayersStore.getState().updatePlayer;
-                const allPlayers = usePlayersStore.getState().players;
-
-                winners.forEach((id) => {
-                    const player = allPlayers.find((p) => p.id === id);
-                    if (player) {
-                        updatePlayerStats(id, {
-                            rating: player.rating + pointsChange,
-                            gamesPlayed: player.gamesPlayed + 1,
-                            wins: player.wins + 1,
-                        });
-                    }
-                });
-
-                losers.forEach((id) => {
-                    const player = allPlayers.find((p) => p.id === id);
-                    if (player) {
-                        updatePlayerStats(id, {
-                            rating: player.rating - pointsChange,
-                            gamesPlayed: player.gamesPlayed + 1,
-                            losses: player.losses + 1,
-                        });
-                    }
-                });
+                for (const id of teamA.concat(teamB)) {
+                    const before = all.find((p) => p.id === id);
+                    if (!before) continue;
+                    const delta = deltas[id] ?? 0;
+                    const isWinner = winners.includes(id);
+                    updatePlayer(id, {
+                        rating: before.rating + delta,
+                        gamesPlayed: before.gamesPlayed + 1,
+                        wins: isWinner ? before.wins + 1 : before.wins,
+                        losses: !isWinner ? before.losses + 1 : before.losses,
+                    });
+                }
 
                 const newGame: Game = {
                     id: uuid(),
@@ -54,7 +54,8 @@ export const useGamesStore = create<GamesState>()(
                     teamA,
                     teamB,
                     winnerTeam,
-                    pointsChange,
+                    pointsChange: Math.abs(summary.teamDeltaA),
+                    perPlayerDeltas: deltas,
                 };
 
                 set((state) => ({ games: [...state.games, newGame] }));

@@ -99,9 +99,16 @@ export function PlayerHistoryCard({ playerId, playerName, playerGames, getPlayer
                       <Chip size="small" label={isWin ? "Win" : "Loss"} color={isWin ? "success" : "error"} variant="filled" />
                     </TableCell>
                     <TableCell align="right">
-                      <Typography color={isWin ? "success.main" : "error.main"} fontWeight={600}>
-                        {isWin ? `+${g.pointsChange}` : `-${g.pointsChange}`}
-                      </Typography>
+                      {(() => {
+                        const personal = g.perPlayerDeltas?.[playerId];
+                        const delta = personal !== undefined ? personal : (isWin ? g.pointsChange : -g.pointsChange);
+                        const positive = delta >= 0;
+                        return (
+                          <Typography color={positive ? "success.main" : "error.main"} fontWeight={600}>
+                            {positive ? `+${Math.abs(delta)}` : `-${Math.abs(delta)}`}
+                          </Typography>
+                        );
+                      })()}
                     </TableCell>
                   </TableRow>
                 );
@@ -128,4 +135,3 @@ export function PlayerHistoryCard({ playerId, playerName, playerGames, getPlayer
     </Card>
   );
 }
-
