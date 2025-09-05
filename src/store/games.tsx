@@ -4,7 +4,7 @@ import type { Game, PlayerId } from "../types/models";
 import { mockGames } from "../db/mock";
 import { usePlayersStore } from "./players";
 import { v4 as uuid } from "uuid";
-import { computePoints } from "../lib/rating/points";
+import { computePointsOpenSkill } from "../lib/rating/openskill";
 
 interface GamesState {
     games: Game[];
@@ -17,7 +17,7 @@ export const useGamesStore = create<GamesState>()(
         (set, get) => ({
             games: mockGames,
 
-            addGame: ({ teamA, teamB, winnerTeam }) => {
+            addGame: async ({ teamA, teamB, winnerTeam }) => {
                 const updatePlayer = usePlayersStore.getState().updatePlayer;
                 const all = usePlayersStore.getState().players;
 
@@ -30,7 +30,7 @@ export const useGamesStore = create<GamesState>()(
                     .filter((p): p is NonNullable<typeof p> => Boolean(p))
                     .map((p) => ({ id: p.id, rating: p.rating, gamesPlayed: p.gamesPlayed }));
 
-                const { deltas, summary } = computePoints({ teamA: teamAPlayers, teamB: teamBPlayers, winnerTeam });
+                const { deltas, summary } = await computePointsOpenSkill({ teamA: teamAPlayers, teamB: teamBPlayers, winnerTeam });
 
                 // Apply updates per player: rating + win/loss + gamesPlayed
                 const winners = winnerTeam === "A" ? teamA : teamB;
