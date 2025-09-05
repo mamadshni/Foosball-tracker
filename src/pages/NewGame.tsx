@@ -1,19 +1,10 @@
 import { useState, useMemo } from "react";
-import {
-    Box,
-    Button,
-    Typography,
-    Autocomplete,
-    TextField,
-    ToggleButton,
-    ToggleButtonGroup,
-    Paper,
-    Stack,
-    Chip,
-} from "@mui/material";
+import { Box, Button, Typography, Paper, Stack } from "@mui/material";
 import { usePlayersStore } from "../store/players";
 import { useGamesStore } from "../store/games";
 import type { Player } from "../types/models";
+import TeamSelector from "../components/new-game/TeamSelector";
+import WinnerSelector from "../components/new-game/WinnerSelector";
 
 type WinnerTeam = "A" | "B" | null;
 
@@ -93,86 +84,27 @@ export default function NewGame() {
             </Typography>
 
             <Paper sx={{ p: 3, mb: 3 }}>
-                <Stack direction="row" spacing={3}>
-                    <Box sx={{ flex: 1 }}>
-                        <Typography variant="h6" gutterBottom>
-                            Team A
-                        </Typography>
-                        <Autocomplete
-                            multiple
-                            options={optionsForTeamA}
-                            getOptionLabel={(o) => o.name}
-                            value={teamA}
-                            onChange={(_, value) => handleTeamChange("A", value)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label={`Select Team A (${teamA.length}/${teamSizeLimit})`}
-                                />
-                            )}
-                        />
-                        {teamA.length > 0 && (
-                            <Stack direction="row" spacing={1} sx={{ mt: 1 }} flexWrap="wrap">
-                                {teamA.map((p) => (
-                                    <Chip
-                                        key={p.id}
-                                        label={p.name}
-                                        onDelete={() => handleTeamChange("A", teamA.filter((x) => x.id !== p.id))}
-                                    />
-                                ))}
-                            </Stack>
-                        )}
-                    </Box>
-
-                    <Box sx={{ flex: 1 }}>
-                        <Typography variant="h6" gutterBottom>
-                            Team B
-                        </Typography>
-                        <Autocomplete
-                            multiple
-                            options={optionsForTeamB}
-                            getOptionLabel={(o) => o.name}
-                            value={teamB}
-                            onChange={(_, value) => handleTeamChange("B", value)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label={`Select Team B (${teamB.length}/${teamSizeLimit})`}
-                                />
-                            )}
-                        />
-                        {teamB.length > 0 && (
-                            <Stack direction="row" spacing={1} sx={{ mt: 1 }} flexWrap="wrap">
-                                {teamB.map((p) => (
-                                    <Chip
-                                        key={p.id}
-                                        label={p.name}
-                                        onDelete={() => handleTeamChange("B", teamB.filter((x) => x.id !== p.id))}
-                                    />
-                                ))}
-                            </Stack>
-                        )}
-                    </Box>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
+                    <TeamSelector
+                        label="Team A"
+                        value={teamA}
+                        options={optionsForTeamA}
+                        limit={teamSizeLimit}
+                        onChange={(value) => handleTeamChange("A", value)}
+                    />
+                    <TeamSelector
+                        label="Team B"
+                        value={teamB}
+                        options={optionsForTeamB}
+                        limit={teamSizeLimit}
+                        onChange={(value) => handleTeamChange("B", value)}
+                    />
                 </Stack>
             </Paper>
 
             {canSave && (
                 <Paper sx={{ p: 3, mb: 3 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Select Winning Team
-                    </Typography>
-                    <ToggleButtonGroup
-                        exclusive
-                        value={winnerTeam}
-                        onChange={(_, val) => setWinnerTeam(val)}
-                    >
-                        <ToggleButton value="A" selected={winnerTeam === "A"}>
-                            Team A
-                        </ToggleButton>
-                        <ToggleButton value="B" selected={winnerTeam === "B"}>
-                            Team B
-                        </ToggleButton>
-                    </ToggleButtonGroup>
+                    <WinnerSelector value={winnerTeam} onChange={setWinnerTeam} />
                 </Paper>
             )}
 
