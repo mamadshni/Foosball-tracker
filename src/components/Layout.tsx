@@ -13,7 +13,7 @@ export default function Layout({ children }: PropsWithChildren) {
         <Box sx={{ display: "flex", minHeight: "100vh", flexDirection: "column" }}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 1, mb: 2 }}>
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         Wuzzler
                     </Typography>
                     <Button color="inherit" component={RouterLink} to="/">Dashboard</Button>
