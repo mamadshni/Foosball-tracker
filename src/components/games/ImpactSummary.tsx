@@ -1,12 +1,13 @@
 import { Stack, Typography } from "@mui/material";
 import type { Game } from "../../types/models";
 import { teamSumDelta } from "../../lib/game/utils";
+import React from "react";
 
 interface Props {
   game: Game;
 }
 
-export default function ImpactSummary({ game }: Props) {
+function ImpactSummaryInner({ game }: Props) {
   const winSum = teamSumDelta(game, game.winnerTeam);
   const loseSum = -winSum;
   return (
@@ -18,3 +19,5 @@ export default function ImpactSummary({ game }: Props) {
   );
 }
 
+const ImpactSummary = React.memo(ImpactSummaryInner);
+export default ImpactSummary;

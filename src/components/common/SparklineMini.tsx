@@ -8,7 +8,9 @@ interface Props {
   zeroLine?: boolean;
 }
 
-export default function SparklineMini({ data, width = 80, height = 28, stroke = '#1976d2', zeroLine = true }: Props) {
+import React from "react";
+
+function SparklineMiniInner({ data, width = 80, height = 28, stroke = '#1976d2', zeroLine = true }: Props) {
   if (!data || data.length === 0) return <Box sx={{ width, height }} />;
   const values = [...data].reverse(); // left-to-right oldest to newest
   const min = Math.min(...values, 0);
@@ -33,3 +35,5 @@ export default function SparklineMini({ data, width = 80, height = 28, stroke = 
   );
 }
 
+const SparklineMini = React.memo(SparklineMiniInner);
+export default SparklineMini;

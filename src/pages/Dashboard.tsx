@@ -2,6 +2,7 @@ import { Box, Typography, Stack, Button } from "@mui/material";
 import { usePlayersStore } from "../store/players";
 import { useGamesStore } from "../store/games";
 import { Link as RouterLink } from "react-router-dom";
+import { usePlayersMap } from "../store/selectors";
 import TopPlayersCard from "../components/dashboard/TopPlayersCard";
 import RecentGamesCard from "../components/dashboard/RecentGamesCard";
 import StreaksCard from "../components/dashboard/StreaksCard";
@@ -13,7 +14,8 @@ export default function Dashboard() {
     const players = usePlayersStore((state) => state.players);
     const games = useGamesStore((state) => state.games);
 
-    const getPlayerName = (id: string) => players.find((p) => p.id === id)?.name || "Unknown";
+    const playersMap = usePlayersMap();
+    const getPlayerName = (id: string) => playersMap.get(id)?.name || "Unknown";
 
     return (
         <Box>

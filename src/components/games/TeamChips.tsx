@@ -8,7 +8,9 @@ interface Props {
   winner?: boolean;
 }
 
-export default function TeamChips({ ids, getPlayerName, deltaLookup, winner }: Props) {
+import React from "react";
+
+function TeamChipsInner({ ids, getPlayerName, deltaLookup, winner }: Props) {
   return (
     <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
       {ids.map((id) => (
@@ -24,3 +26,5 @@ export default function TeamChips({ ids, getPlayerName, deltaLookup, winner }: P
   );
 }
 
+const TeamChips = React.memo(TeamChipsInner);
+export default TeamChips;

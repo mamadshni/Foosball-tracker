@@ -13,7 +13,7 @@ interface Props {
 
 const initial = (name?: string) => (name ? name.charAt(0).toUpperCase() : "?");
 
-export default function PlayerChip({ id, name, delta, size = "small", variant = "outlined", showAvatar = true, colorOverride }: Props) {
+function PlayerChipInner({ id, name, delta, size = "small", variant = "outlined", showAvatar = true, colorOverride }: Props) {
   const hasDelta = typeof delta === "number";
   const positive = (delta ?? 0) >= 0;
   const label = hasDelta ? `${name} (${positive ? "+" : ""}${delta})` : name;
@@ -32,3 +32,6 @@ export default function PlayerChip({ id, name, delta, size = "small", variant = 
   );
 }
 
+import React from "react";
+const PlayerChip = React.memo(PlayerChipInner);
+export default PlayerChip;

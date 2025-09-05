@@ -1,5 +1,6 @@
 import { useGamesStore } from "../store/games";
 import { usePlayersStore } from "../store/players";
+import { usePlayersMap } from "../store/selectors";
 import { Box, Typography } from "@mui/material";
 import type { Game } from "../types/models";
 import { useGamesViewStore } from "../store/gamesView";
@@ -9,6 +10,7 @@ import GamesTable from "../components/games/GamesTable";
 export default function GamesList() {
     const games = useGamesStore((state) => state.games);
     const players = usePlayersStore((state) => state.players);
+    const playersMap = usePlayersMap();
     const teamSize = useGamesViewStore((s) => s.teamSize);
     // filters are controlled in GamesFilterBar
     const winner = useGamesViewStore((s) => s.winner);
@@ -17,7 +19,7 @@ export default function GamesList() {
     const sortDir = useGamesViewStore((s) => s.sortDir);
     // sorting controls handled in GamesFilterBar
 
-    const getPlayerName = (id: string) => players.find((p) => p.id === id)?.name || "Unknown";
+    const getPlayerName = (id: string) => playersMap.get(id)?.name || "Unknown";
     // helpers moved into GamesTable
 
     const teamSumDelta = (g: Game, team: "A" | "B") => {
