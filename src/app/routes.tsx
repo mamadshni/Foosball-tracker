@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         path: '/games/new',
         element: <Layout><NewGame /></Layout>,
     },
-]);
+], { basename: import.meta.env.BASE_URL });
 
 export function AppRouter() {
     return <RouterProvider router={router} />;
