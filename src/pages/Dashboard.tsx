@@ -1,33 +1,20 @@
-import {
-    Box,
-    Typography,
-    Paper,
-    Button,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
-    Stack,
-} from "@mui/material";
+import { Box, Typography, Stack, Button } from "@mui/material";
 import { usePlayersStore } from "../store/players";
 import { useGamesStore } from "../store/games";
 import { Link as RouterLink } from "react-router-dom";
+import TopPlayersCard from "../components/dashboard/TopPlayersCard";
+import RecentGamesCard from "../components/dashboard/RecentGamesCard";
+import StreaksCard from "../components/dashboard/StreaksCard";
+import MostImprovedCard from "../components/dashboard/MostImprovedCard";
+import UpsetsCard from "../components/dashboard/UpsetsCard";
+import MostActiveCard from "../components/dashboard/MostActiveCard";
+import BestWinRateCard from "../components/dashboard/BestWinRateCard";
 
 export default function Dashboard() {
     const players = usePlayersStore((state) => state.players);
     const games = useGamesStore((state) => state.games);
 
-    const topPlayers = [...players]
-        .sort((a, b) => b.rating - a.rating)
-        .slice(0, 5);
-
-    const recentGames = [...games]
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .slice(0, 5);
-
-    const getPlayerName = (id: string) =>
-        players.find((p) => p.id === id)?.name || "Unknown";
+    const getPlayerName = (id: string) => players.find((p) => p.id === id)?.name || "Unknown";
 
     return (
         <Box>
@@ -44,67 +31,14 @@ export default function Dashboard() {
                 </Button>
             </Stack>
 
-            <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 3 }}>
-                {/* Top Players */}
-                <Paper sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Top Players
-                    </Typography>
-                    <Table size="small">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Rating</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {topPlayers.map((p) => (
-                                <TableRow key={p.id}>
-                                    <TableCell>{p.name}</TableCell>
-                                    <TableCell>{p.rating}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Paper>
-
-                {/* Recent Games */}
-                <Paper sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Recent Games
-                    </Typography>
-                    <Table size="small">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Date</TableCell>
-                                <TableCell>Winners</TableCell>
-                                <TableCell>Losers</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {recentGames.map((g) => {
-                                const winners =
-                                    g.winnerTeam === "A"
-                                        ? g.teamA.map(getPlayerName)
-                                        : g.teamB.map(getPlayerName);
-                                const losers =
-                                    g.winnerTeam === "A"
-                                        ? g.teamB.map(getPlayerName)
-                                        : g.teamA.map(getPlayerName);
-
-                                return (
-                                    <TableRow key={g.id}>
-                                        <TableCell>
-                                            {new Date(g.date).toLocaleDateString()}
-                                        </TableCell>
-                                        <TableCell>{winners.join(", ")}</TableCell>
-                                        <TableCell>{losers.join(", ")}</TableCell>
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                </Paper>
+            <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: { xs: '1fr', lg: 'repeat(2, 1fr)' } }}>
+                <TopPlayersCard players={players} />
+                <RecentGamesCard games={games} getPlayerName={getPlayerName} />
+                <StreaksCard players={players} games={games} />
+                <MostImprovedCard players={players} games={games} />
+                <MostActiveCard players={players} games={games} />
+                <BestWinRateCard players={players} />
+                <UpsetsCard players={players} games={games} />
             </Box>
         </Box>
     );
