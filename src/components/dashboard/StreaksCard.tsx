@@ -34,7 +34,7 @@ export default function StreaksCard({ players, games, limit = 5 }: Props) {
             {hot.length === 0 && <Typography color="text.secondary">No active win streaks</Typography>}
             {hot.map(({ p, s }) => (
               <Stack key={p.id} direction="row" spacing={1} alignItems="center">
-                <Avatar component={RouterLink} to={`/players/${p.id}`}>{initial(p.name)}</Avatar>
+                <Avatar component={RouterLink} to={`/players/${p.id}`} sx={{ textDecoration: 'none' }}>{initial(p.name)}</Avatar>
                 <Typography component={RouterLink} to={`/players/${p.id}`} flex={1} fontWeight={600} sx={{ textDecoration: 'none', color: 'inherit' }}>{p.name}</Typography>
                 <Typography color="success.main" fontWeight={700}>{`${s.length} W`}</Typography>
               </Stack>
@@ -45,7 +45,7 @@ export default function StreaksCard({ players, games, limit = 5 }: Props) {
             {cold.length === 0 && <Typography color="text.secondary">No active losing streaks</Typography>}
             {cold.map(({ p, s }) => (
               <Stack key={p.id} direction="row" spacing={1} alignItems="center">
-                <Avatar component={RouterLink} to={`/players/${p.id}`}>{initial(p.name)}</Avatar>
+                <Avatar component={RouterLink} to={`/players/${p.id}`} sx={{ textDecoration: 'none' }}>{initial(p.name)}</Avatar>
                 <Typography component={RouterLink} to={`/players/${p.id}`} flex={1} fontWeight={600} sx={{ textDecoration: 'none', color: 'inherit' }}>{p.name}</Typography>
                 <Typography color="error.main" fontWeight={700}>{`${s.length} L`}</Typography>
               </Stack>

@@ -5,7 +5,6 @@ import { Link as RouterLink } from "react-router-dom";
 import TopPlayersCard from "../components/dashboard/TopPlayersCard";
 import RecentGamesCard from "../components/dashboard/RecentGamesCard";
 import StreaksCard from "../components/dashboard/StreaksCard";
-import MostImprovedCard from "../components/dashboard/MostImprovedCard";
 import UpsetsCard from "../components/dashboard/UpsetsCard";
 import MostActiveCard from "../components/dashboard/MostActiveCard";
 import BestWinRateCard from "../components/dashboard/BestWinRateCard";
@@ -35,7 +34,7 @@ export default function Dashboard() {
                 <TopPlayersCard players={players} />
                 <RecentGamesCard games={games} getPlayerName={getPlayerName} />
                 <StreaksCard players={players} games={games} />
-                <MostImprovedCard players={players} games={games} />
+                {/* <MostImprovedCard players={players} games={games} /> */}
                 <MostActiveCard players={players} games={games} />
                 <BestWinRateCard players={players} />
                 <UpsetsCard players={players} games={games} />

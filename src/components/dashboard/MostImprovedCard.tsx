@@ -30,7 +30,7 @@ export default function MostImprovedCard({ players, games, n = 5, limit = 5 }: P
             const s = series[p.id] ?? [];
             return (
               <Stack key={p.id} direction="row" alignItems="center" spacing={1.5}>
-                <Avatar component={RouterLink} to={`/players/${p.id}`}>{initial(p.name)}</Avatar>
+                <Avatar component={RouterLink} to={`/players/${p.id}`} sx={{ textDecoration: 'none' }}>{initial(p.name)}</Avatar>
                 <Typography component={RouterLink} to={`/players/${p.id}`} flex={1} fontWeight={600} sx={{ textDecoration: 'none', color: 'inherit' }}>{p.name}</Typography>
                 <SparklineMini data={s} />
                 <Typography color={d >= 0 ? 'success.main' : 'error.main'} fontWeight={700} sx={{ minWidth: 46, textAlign: 'right' }}>{d >= 0 ? `+${d}` : d}</Typography>

@@ -26,7 +26,7 @@ export default function MostActiveCard({ players, games, days = 14, limit = 5 }:
         <Stack spacing={1.5}>
           {ranked.map(({ p, c }) => (
             <Stack key={p.id} direction="row" alignItems="center" spacing={1.5}>
-              <Avatar component={RouterLink} to={`/players/${p.id}`}>{initial(p.name)}</Avatar>
+              <Avatar component={RouterLink} to={`/players/${p.id}`} sx={{ textDecoration: 'none' }}>{initial(p.name)}</Avatar>
               <Typography component={RouterLink} to={`/players/${p.id}`} flex={1} fontWeight={600} sx={{ textDecoration: 'none', color: 'inherit' }}>{p.name}</Typography>
               <Typography color="text.secondary">{c} games</Typography>
             </Stack>

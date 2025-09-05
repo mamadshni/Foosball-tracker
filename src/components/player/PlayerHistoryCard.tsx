@@ -1,25 +1,8 @@
-import {
-  alpha,
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  Chip,
-  Divider,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Button,
-} from "@mui/material";
+import { alpha, Box, Card, CardContent, CardHeader, Divider, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button, Chip } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { format } from "date-fns";
 import type { Game, PlayerId } from "../../types/models";
+import PlayerChip from "../common/PlayerChip";
 
 interface Props {
   playerId: PlayerId;
@@ -28,7 +11,6 @@ interface Props {
   getPlayerName: (id: string) => string;
 }
 
-const initial = (name?: string) => (name ? name.charAt(0).toUpperCase() : "?");
 
 export function PlayerHistoryCard({ playerId, playerName, playerGames, getPlayerName }: Props) {
   return (
@@ -66,32 +48,14 @@ export function PlayerHistoryCard({ playerId, playerName, playerGames, getPlayer
                     <TableCell>
                       <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                         {teammates.map((id) => (
-                          <Chip
-                            key={id}
-                            size="small"
-                            avatar={<Avatar>{initial(getPlayerName(id))}</Avatar>}
-                            label={getPlayerName(id)}
-                            component={RouterLink}
-                            to={`/players/${id}`}
-                            clickable
-                            variant="outlined"
-                          />
+                          <PlayerChip key={id} id={id} name={getPlayerName(id)} />
                         ))}
                       </Stack>
                     </TableCell>
                     <TableCell>
                       <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                         {opponents.map((id) => (
-                          <Chip
-                            key={id}
-                            size="small"
-                            avatar={<Avatar>{initial(getPlayerName(id))}</Avatar>}
-                            label={getPlayerName(id)}
-                            component={RouterLink}
-                            to={`/players/${id}`}
-                            clickable
-                            variant="outlined"
-                          />
+                          <PlayerChip key={id} id={id} name={getPlayerName(id)} />
                         ))}
                       </Stack>
                     </TableCell>
