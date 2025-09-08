@@ -89,7 +89,7 @@ export default function Layout({ children }: PropsWithChildren) {
       </List>
       <Divider />
       {/* Theme toggle at the bottom of the drawer */}
-      <Box sx={{ p: 1.5, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* <Box sx={{ p: 1.5, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <ToggleButtonGroup
           size="small"
           exclusive
@@ -106,7 +106,7 @@ export default function Layout({ children }: PropsWithChildren) {
             <DarkModeRoundedIcon fontSize="small" />
           </ToggleButton>
         </ToggleButtonGroup>
-      </Box>
+      </Box> */}
     </Box>
   );
 
@@ -150,7 +150,7 @@ export default function Layout({ children }: PropsWithChildren) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" fontWeight={700}>Wuzzler</Typography>
-            <Box sx={{ ml: "auto" }}>
+            {/* <Box sx={{ ml: "auto" }}>
               <ToggleButtonGroup
                 size="small"
                 exclusive
@@ -167,7 +167,7 @@ export default function Layout({ children }: PropsWithChildren) {
                   <DarkModeRoundedIcon fontSize="small" />
                 </ToggleButton>
               </ToggleButtonGroup>
-            </Box>
+            </Box> */}
           </Toolbar>
         </AppBar>
       )}

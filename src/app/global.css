@@ -1,5 +1,5 @@
 /* Global theme background and utility styles */
-/* Default to dark variables; light overrides below via [data-mui-color-scheme="light"] */
+/* Default to dark variables; light overrides below via [data-light] */
 :root {
   --bg-0: #080c18;
   --bg-1: #0b1020;
@@ -13,7 +13,7 @@
   --accent-2: #7c5cff; /* violet */
 }
 
-:root[data-mui-color-scheme="light"] {
+:root[data-light] {
   --bg-0: #eef2f9;
   --bg-1: #f7f8fb;
   --bg-2: #ffffff;
@@ -59,7 +59,7 @@ body::before {
   z-index: 0;
 }
 
-:root[data-mui-color-scheme="light"] body::before {
+:root[data-light] body::before {
   background-image:
     linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
@@ -83,11 +83,11 @@ body::before {
 *::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.28); border-radius: 8px; }
 *::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.38); }
 
-:root[data-mui-color-scheme="light"] * {
+:root[data-light] * {
   scrollbar-color: rgba(0,0,0,0.3) transparent;
 }
-:root[data-mui-color-scheme="light"] *::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.28); }
-:root[data-mui-color-scheme="light"] *::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.38); }
+:root[data-light] *::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.28); }
+:root[data-light] *::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.38); }
 
 /* Accent text gradient */
 .text-gradient {
