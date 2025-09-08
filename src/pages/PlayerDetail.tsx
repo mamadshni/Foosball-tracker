@@ -22,9 +22,11 @@ export default function PlayerDetail() {
 
     const playerGames = useMemo(
         () =>
-            games.filter(
-                (g) => g.teamA.includes(playerId || "") || g.teamB.includes(playerId || "")
-            ),
+            games
+                .filter(
+                    (g) => g.teamA.includes(playerId || "") || g.teamB.includes(playerId || "")
+                )
+                .sort(_ => -1),
         [games, playerId]
     );
 

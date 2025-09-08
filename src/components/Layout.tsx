@@ -16,19 +16,13 @@ import {
   Stack,
   Container,
   Toolbar,
-  ToggleButtonGroup,
-  ToggleButton,
 } from "@mui/material";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import TableRowsRoundedIcon from "@mui/icons-material/TableRowsRounded";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import MenuIcon from "@mui/icons-material/Menu";
-import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
-import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import React from "react";
-import { useColorScheme } from "@mui/material/styles";
 
 const drawerWidth = 80;
 
@@ -49,7 +43,6 @@ export default function Layout({ children }: PropsWithChildren) {
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const location = useLocation();
-  const { mode, setMode } = useColorScheme();
 
   const drawer = (
     <Box height="100%" display="flex" flexDirection="column">
