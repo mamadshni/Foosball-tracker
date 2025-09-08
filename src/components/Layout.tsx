@@ -21,6 +21,7 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import TableRowsRoundedIcon from "@mui/icons-material/TableRowsRounded";
+import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import MenuIcon from "@mui/icons-material/Menu";
 import React from "react";
 
@@ -36,6 +37,7 @@ const navItems: NavItem[] = [
   { label: "Dashboard", to: "/", icon: <DashboardRoundedIcon /> },
   { label: "Players", to: "/players", icon: <GroupRoundedIcon /> },
   { label: "Games", to: "/games", icon: <TableRowsRoundedIcon /> },
+  { label: "New Game", to: "/games/new", icon: <AddCircleRoundedIcon /> },
 ];
 
 export default function Layout({ children }: PropsWithChildren) {
@@ -61,8 +63,6 @@ export default function Layout({ children }: PropsWithChildren) {
                 component={RouterLink}
                 to={item.to}
                 selected={selected}
-                aria-label={item.label}
-                aria-current={selected ? 'page' : undefined}
                 sx={{
                   mx: 1,
                   my: 0.5,
@@ -76,7 +76,7 @@ export default function Layout({ children }: PropsWithChildren) {
                 <ListItemIcon sx={{ minWidth: 0, color: selected ? "primary.main" : "inherit" }}>
                   {item.icon}
                 </ListItemIcon>
-                <ListItemText primary={item.label} sx={{ '.MuiListItemText-primary': { display: 'inline-block' } }} className="visually-hidden" />
+                <ListItemText primary={item.label} sx={{ display: "none" }} />
               </ListItemButton>
             </Tooltip>
           );
@@ -121,12 +121,11 @@ export default function Layout({ children }: PropsWithChildren) {
               edge="start"
               color="inherit"
               onClick={() => setMobileOpen(true)}
-              aria-label="Open navigation menu"
               sx={{ mr: 1 }}
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" fontWeight={700}>wuzzler</Typography>
+            <Typography variant="h6" fontWeight={700}>Wuzzler</Typography>
           </Toolbar>
         </AppBar>
       )}
