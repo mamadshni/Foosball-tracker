@@ -16,6 +16,8 @@ import {
   Stack,
   Container,
   Toolbar,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
@@ -23,7 +25,10 @@ import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import TableRowsRoundedIcon from "@mui/icons-material/TableRowsRounded";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import MenuIcon from "@mui/icons-material/Menu";
+import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
+import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import React from "react";
+import { useColorScheme } from "@mui/material/styles";
 
 const drawerWidth = 80;
 
@@ -37,7 +42,6 @@ const navItems: NavItem[] = [
   { label: "Dashboard", to: "/", icon: <DashboardRoundedIcon /> },
   { label: "Players", to: "/players", icon: <GroupRoundedIcon /> },
   { label: "Games", to: "/games", icon: <TableRowsRoundedIcon /> },
-  { label: "New Game", to: "/games/new", icon: <AddCircleRoundedIcon /> },
 ];
 
 export default function Layout({ children }: PropsWithChildren) {
@@ -45,6 +49,7 @@ export default function Layout({ children }: PropsWithChildren) {
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const location = useLocation();
+  const { mode, setMode } = useColorScheme();
 
   const drawer = (
     <Box height="100%" display="flex" flexDirection="column">
@@ -83,6 +88,25 @@ export default function Layout({ children }: PropsWithChildren) {
         })}
       </List>
       <Divider />
+      {/* Theme toggle at the bottom of the drawer */}
+      <Box sx={{ p: 1.5, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <ToggleButtonGroup
+          size="small"
+          exclusive
+          value={mode === 'light' || mode === 'dark' ? mode : 'light'}
+          onChange={(_, v) => {
+            if (v && v !== mode) setMode(v);
+          }}
+          aria-label="Theme mode"
+        >
+          <ToggleButton value="light" aria-label="Light mode">
+            <LightModeRoundedIcon fontSize="small" />
+          </ToggleButton>
+          <ToggleButton value="dark" aria-label="Dark mode">
+            <DarkModeRoundedIcon fontSize="small" />
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
     </Box>
   );
 
@@ -126,6 +150,24 @@ export default function Layout({ children }: PropsWithChildren) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" fontWeight={700}>Wuzzler</Typography>
+            <Box sx={{ ml: "auto" }}>
+              <ToggleButtonGroup
+                size="small"
+                exclusive
+                value={mode === 'light' || mode === 'dark' ? mode : 'light'}
+                onChange={(_, v) => {
+                  if (v && v !== mode) setMode(v);
+                }}
+                aria-label="Theme mode"
+              >
+                <ToggleButton value="light" aria-label="Light mode">
+                  <LightModeRoundedIcon fontSize="small" />
+                </ToggleButton>
+                <ToggleButton value="dark" aria-label="Dark mode">
+                  <DarkModeRoundedIcon fontSize="small" />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
           </Toolbar>
         </AppBar>
       )}
