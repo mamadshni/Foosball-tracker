@@ -60,7 +60,7 @@ export default function GamesList() {
 
     return (
         <Box>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom className="text-gradient">
                 All Games
             </Typography>
             <GamesFilterBar players={players} />

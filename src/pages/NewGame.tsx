@@ -78,7 +78,7 @@ export default function NewGame() {
 
     return (
         <Box>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom className="text-gradient">
                 New Game
             </Typography>
 

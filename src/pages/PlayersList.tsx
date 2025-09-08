@@ -45,7 +45,7 @@ export default function PlayersList() {
     return (
         <Box>
             <Stack direction={{ xs: "column", md: "row" }} justifyContent="space-between" alignItems={{ md: "center" }} sx={{ mb: 2 }}>
-                <Typography variant="h4">Players</Typography>
+                <Typography variant="h4" className="text-gradient">Players</Typography>
             </Stack>
 
             <PlayersFilterBar onAddClick={() => setOpen(true)} />

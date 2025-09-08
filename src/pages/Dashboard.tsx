@@ -19,7 +19,7 @@ export default function Dashboard() {
 
     return (
         <Box>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom className="text-gradient">
                 Dashboard
             </Typography>
 

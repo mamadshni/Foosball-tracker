@@ -48,14 +48,14 @@ export function PlayerHistoryCard({ playerId, playerName, playerGames, getPlayer
                     <TableCell>
                       <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                         {teammates.map((id) => (
-                          <PlayerChip key={id} id={id} name={getPlayerName(id)} />
+                          <PlayerChip key={id} id={id} name={getPlayerName(id)} colorOverride={isWin ? "success" : "error"} />
                         ))}
                       </Stack>
                     </TableCell>
                     <TableCell>
                       <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                         {opponents.map((id) => (
-                          <PlayerChip key={id} id={id} name={getPlayerName(id)} />
+                          <PlayerChip key={id} id={id} name={getPlayerName(id)} colorOverride={isWin ? "error" : "success"} />
                         ))}
                       </Stack>
                     </TableCell>

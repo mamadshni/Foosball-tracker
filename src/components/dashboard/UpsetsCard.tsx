@@ -24,7 +24,7 @@ export default function UpsetsCard({ players, games, limit = 5 }: Props) {
               <Typography color="text.secondary" sx={{ minWidth: 95 }}>{formatDate(g.date)}</Typography>
               <TeamChips ids={g.winnerTeam === 'A' ? g.teamA : g.teamB} getPlayerName={getName} winner />
               <Typography color="text.secondary">def.</Typography>
-              <TeamChips ids={g.winnerTeam === 'A' ? g.teamB : g.teamA} getPlayerName={getName} />
+              <TeamChips ids={g.winnerTeam === 'A' ? g.teamB : g.teamA} getPlayerName={getName} winner={false} />
               <Typography ml="auto" fontWeight={700}>±{teamImpact(g)}</Typography>
             </Stack>
           ))}

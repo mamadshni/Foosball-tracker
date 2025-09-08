@@ -9,7 +9,7 @@ interface UIState {
 export const useUIStore = create<UIState>()(
     persist(
         (set, get) => ({
-            mode: "light",
+            mode: "dark",
             toggleMode: () =>
                 set({ mode: get().mode === "light" ? "dark" : "light" }),
         }),

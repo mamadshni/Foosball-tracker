@@ -1,31 +1,140 @@
-import type {PropsWithChildren} from "react";
-import { AppBar, Box, Container, Toolbar, Typography, Button, IconButton } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
-import { useUIStore } from "../store/ui";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+import type { PropsWithChildren } from "react";
+import {
+  AppBar,
+  Box,
+  Typography,
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+  useTheme,
+  useMediaQuery,
+  IconButton,
+  Divider,
+  Stack,
+  Container,
+  Toolbar,
+} from "@mui/material";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
+import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
+import TableRowsRoundedIcon from "@mui/icons-material/TableRowsRounded";
+import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import MenuIcon from "@mui/icons-material/Menu";
+import React from "react";
+
+const drawerWidth = 80;
+
+interface NavItem {
+  label: string;
+  to: string;
+  icon: React.ReactNode;
+}
+
+const navItems: NavItem[] = [
+  { label: "Dashboard", to: "/", icon: <DashboardRoundedIcon /> },
+  { label: "Players", to: "/players", icon: <GroupRoundedIcon /> },
+  { label: "Games", to: "/games", icon: <TableRowsRoundedIcon /> },
+  { label: "New Game", to: "/games/new", icon: <AddCircleRoundedIcon /> },
+];
 
 export default function Layout({ children }: PropsWithChildren) {
-    const mode = useUIStore((state) => state.mode);
-    const toggleMode = useUIStore((state) => state.toggleMode);
+  const theme = useTheme();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const location = useLocation();
 
-    return (
-        <Box sx={{ display: "flex", minHeight: "100vh", flexDirection: "column" }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                        Wuzzler
-                    </Typography>
-                    <Button color="inherit" component={RouterLink} to="/">Dashboard</Button>
-                    <Button color="inherit" component={RouterLink} to="/players">Players</Button>
-                    <Button color="inherit" component={RouterLink} to="/games">Games</Button>
-                    <Button color="inherit" component={RouterLink} to="/games/new">New Game</Button>
-                    <IconButton color="inherit" onClick={toggleMode}>
-                        {mode === "light" ? <Brightness4Icon /> : <Brightness7Icon />}
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-            <Container sx={{ py: 3, flex: 1 }}>{children}</Container>
-        </Box>
-    );
+  const drawer = (
+    <Box height="100%" display="flex" flexDirection="column">
+      <Stack direction="row" alignItems="center" justifyContent="center" sx={{ height: 72 }}>
+        <Typography variant="h6" fontWeight={800} className="text-gradient">
+          W
+        </Typography>
+      </Stack>
+      <Divider />
+      <List sx={{ py: 2, flex: 1 }}>
+        {navItems.map((item) => {
+          const selected = location.pathname === item.to || (item.to !== "/" && location.pathname.startsWith(item.to));
+          return (
+            <Tooltip key={item.to} title={item.label} placement="right">
+              <ListItemButton
+                component={RouterLink}
+                to={item.to}
+                selected={selected}
+                sx={{
+                  mx: 1,
+                  my: 0.5,
+                  borderRadius: 2,
+                  '&.Mui-selected': {
+                    backgroundImage: `linear-gradient(135deg, ${theme.palette.primary.main}22, ${theme.palette.secondary.main}22)`,
+                    border: `1px solid ${theme.palette.primary.main}55`,
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: 0, color: selected ? "primary.main" : "inherit" }}>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.label} sx={{ display: "none" }} />
+              </ListItemButton>
+            </Tooltip>
+          );
+        })}
+      </List>
+      <Divider />
+    </Box>
+  );
+
+  return (
+    <Box sx={{ display: "flex", minHeight: "100vh", position: "relative" }}>
+      {/* Side Navigation */}
+      {isMdUp ? (
+        <Drawer
+          variant="permanent"
+          open
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: "border-box" },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      ) : (
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          ModalProps={{ keepMounted: true }}
+          sx={{ [`& .MuiDrawer-paper`]: { width: drawerWidth } }}
+        >
+          {drawer}
+        </Drawer>
+      )}
+
+      {/* Mobile top bar with burger */}
+      {!isMdUp && (
+        <AppBar position="fixed" color="transparent" enableColorOnDark>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={() => setMobileOpen(true)}
+              sx={{ mr: 1 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" fontWeight={700}>wuzzler</Typography>
+          </Toolbar>
+        </AppBar>
+      )}
+
+      {/* Main content */}
+      <Box component="main" sx={{ flexGrow: 1, pl: { xs: 0, md: `${drawerWidth}px` } }}>
+        {!isMdUp && <Toolbar />}
+        <Container sx={{ py: 3 }}>{children}</Container>
+      </Box>
+    </Box>
+  );
 }

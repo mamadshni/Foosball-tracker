@@ -22,7 +22,7 @@ export default function RecentGamesCard({ games, getPlayerName, limit = 5 }: Pro
               <Typography color="text.secondary" sx={{ minWidth: 95 }}>{formatDate(g.date)}</Typography>
               <TeamChips ids={g.winnerTeam === 'A' ? g.teamA : g.teamB} getPlayerName={getPlayerName} winner />
               <Typography color="text.secondary">def.</Typography>
-              <TeamChips ids={g.winnerTeam === 'A' ? g.teamB : g.teamA} getPlayerName={getPlayerName} />
+              <TeamChips ids={g.winnerTeam === 'A' ? g.teamB : g.teamA} getPlayerName={getPlayerName} winner={false} />
             </Stack>
           ))}
         </Stack>

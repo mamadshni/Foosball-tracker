@@ -7,6 +7,7 @@ import { useUIStore } from "./store/ui";
 import { useEffect } from "react";
 import { usePlayersStore } from "./store/players";
 import { useGamesStore } from "./store/games";
+import "./app/global.css";
 
 function Root() {
     const mode = useUIStore((state) => state.mode);

@@ -1,4 +1,5 @@
 import { Avatar, Chip } from "@mui/material";
+import { alpha, useTheme } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
 
 interface Props {
@@ -14,10 +15,23 @@ interface Props {
 const initial = (name?: string) => (name ? name.charAt(0).toUpperCase() : "?");
 
 function PlayerChipInner({ id, name, delta, size = "small", variant = "outlined", showAvatar = true, colorOverride }: Props) {
+  const theme = useTheme();
   const hasDelta = typeof delta === "number";
   const positive = (delta ?? 0) >= 0;
   const label = hasDelta ? `${name} (${positive ? "+" : ""}${delta})` : name;
-  const color = colorOverride ?? (hasDelta ? (positive ? "success" : "error") : undefined);
+  // For explicit winner/loser tags, tint to match theme rather than strong red/green
+  const tone = colorOverride
+    ? (colorOverride === "success" ? theme.palette.success.main : theme.palette.error.main)
+    : undefined;
+  const color = colorOverride ? undefined : (hasDelta ? (positive ? "success" : "error") : undefined);
+  const resolvedVariant = variant; // keep outlined look; tint via sx below when colorOverride is set
+  const sx = colorOverride
+    ? {
+        backgroundColor: alpha(tone!, 0.25),
+        borderColor: alpha(tone!, 0.5),
+        color: theme.palette.text.primary,
+      }
+    : undefined;
   return (
     <Chip
       size={size}
@@ -26,8 +40,9 @@ function PlayerChipInner({ id, name, delta, size = "small", variant = "outlined"
       component={RouterLink}
       to={`/players/${id}`}
       clickable
-      variant={variant}
+      variant={resolvedVariant}
       color={color as any}
+      sx={sx}
     />
   );
 }
