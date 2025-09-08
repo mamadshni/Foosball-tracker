@@ -14,6 +14,7 @@ import {
   Paper,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import QuickAddGameButton from "../games/QuickAddGameButton";
 import type { Player } from "../../types/models";
 
 interface Props {
@@ -129,9 +130,7 @@ export function PlayerOverviewCard({
         </Stack>
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between", px: 2, py: 1.5 }}>
-        <Button component={RouterLink} to="/games/new" variant="outlined" size="small">
-          Record Match
-        </Button>
+        <QuickAddGameButton label="Add Game" variant="outlined" size="small" />
         <Button component={RouterLink} to="/players" size="small">Back to Players</Button>
       </CardActions>
     </Card>

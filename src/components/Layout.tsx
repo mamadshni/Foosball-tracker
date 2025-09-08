@@ -21,7 +21,6 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import TableRowsRoundedIcon from "@mui/icons-material/TableRowsRounded";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import MenuIcon from "@mui/icons-material/Menu";
 import React from "react";
 
@@ -37,7 +36,6 @@ const navItems: NavItem[] = [
   { label: "Dashboard", to: "/", icon: <DashboardRoundedIcon /> },
   { label: "Players", to: "/players", icon: <GroupRoundedIcon /> },
   { label: "Games", to: "/games", icon: <TableRowsRoundedIcon /> },
-  { label: "New Game", to: "/games/new", icon: <AddCircleRoundedIcon /> },
 ];
 
 export default function Layout({ children }: PropsWithChildren) {

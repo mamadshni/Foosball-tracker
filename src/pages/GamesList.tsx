@@ -1,11 +1,13 @@
 import { useGamesStore } from "../store/games";
 import { usePlayersStore } from "../store/players";
 import { usePlayersMap } from "../store/selectors";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Stack, Button } from "@mui/material";
 import type { Game } from "../types/models";
 import { useGamesViewStore } from "../store/gamesView";
 import GamesFilterBar from "../components/games/GamesFilterBar";
 import GamesTable from "../components/games/GamesTable";
+import { useState } from "react";
+import AddGameDialog from "../components/games/AddGameDialog";
 
 export default function GamesList() {
     const games = useGamesStore((state) => state.games);
@@ -58,13 +60,16 @@ export default function GamesList() {
         return sortDir === "desc" ? ib - ia : ia - ib;
     });
 
+    const [quickOpen, setQuickOpen] = useState(false);
     return (
         <Box>
-            <Typography variant="h4" gutterBottom className="text-gradient">
-                All Games
-            </Typography>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
+                <Typography variant="h4" className="text-gradient">All Games</Typography>
+                <Button variant="outlined" onClick={() => setQuickOpen(true)}>Add Game</Button>
+            </Stack>
             <GamesFilterBar players={players} />
             <GamesTable games={sorted} getPlayerName={getPlayerName} />
+            <AddGameDialog open={quickOpen} onClose={() => setQuickOpen(false)} />
         </Box>
     );
 }

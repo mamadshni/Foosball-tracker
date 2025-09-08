@@ -1,5 +1,6 @@
-import { alpha, Box, Card, CardContent, CardHeader, Divider, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button, Chip } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { alpha, Box, Card, CardContent, CardHeader, Divider, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Chip } from "@mui/material";
+// import { Link as RouterLink } from "react-router-dom";
+import QuickAddGameButton from "../games/QuickAddGameButton";
 import { format } from "date-fns";
 import type { Game, PlayerId } from "../../types/models";
 import PlayerChip from "../common/PlayerChip";
@@ -85,9 +86,7 @@ export function PlayerHistoryCard({ playerId, playerName, playerGames, getPlayer
                       <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                         Record the first match for {playerName}.
                       </Typography>
-                      <Button component={RouterLink} to="/games/new" variant="contained" size="small">
-                        Record Match
-                      </Button>
+                      <QuickAddGameButton label="Add Game" variant="contained" size="small" />
                     </Box>
                   </TableCell>
                 </TableRow>

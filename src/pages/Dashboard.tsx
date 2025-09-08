@@ -9,6 +9,8 @@ import StreaksCard from "../components/dashboard/StreaksCard";
 import UpsetsCard from "../components/dashboard/UpsetsCard";
 import MostActiveCard from "../components/dashboard/MostActiveCard";
 import BestWinRateCard from "../components/dashboard/BestWinRateCard";
+import AddGameDialog from "../components/games/AddGameDialog";
+import { useState } from "react";
 
 export default function Dashboard() {
     const players = usePlayersStore((state) => state.players);
@@ -17,6 +19,7 @@ export default function Dashboard() {
     const playersMap = usePlayersMap();
     const getPlayerName = (id: string) => playersMap.get(id)?.name || "Unknown";
 
+    const [quickOpen, setQuickOpen] = useState(false);
     return (
         <Box>
             <Typography variant="h4" gutterBottom className="text-gradient">
@@ -24,8 +27,8 @@ export default function Dashboard() {
             </Typography>
 
             <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
-                <Button variant="contained" component={RouterLink} to="/games/new">
-                    New Game
+                <Button variant="contained" onClick={() => setQuickOpen(true)}>
+                    Add Game
                 </Button>
                 <Button variant="outlined" component={RouterLink} to="/players">
                     View Players
@@ -41,6 +44,7 @@ export default function Dashboard() {
                 <BestWinRateCard players={players} />
                 <UpsetsCard players={players} games={games} />
             </Box>
+            <AddGameDialog open={quickOpen} onClose={() => setQuickOpen(false)} />
         </Box>
     );
 }
