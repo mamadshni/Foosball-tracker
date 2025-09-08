@@ -63,6 +63,8 @@ export default function Layout({ children }: PropsWithChildren) {
                 component={RouterLink}
                 to={item.to}
                 selected={selected}
+                aria-label={item.label}
+                aria-current={selected ? 'page' : undefined}
                 sx={{
                   mx: 1,
                   my: 0.5,
@@ -76,7 +78,7 @@ export default function Layout({ children }: PropsWithChildren) {
                 <ListItemIcon sx={{ minWidth: 0, color: selected ? "primary.main" : "inherit" }}>
                   {item.icon}
                 </ListItemIcon>
-                <ListItemText primary={item.label} sx={{ display: "none" }} />
+                <ListItemText primary={item.label} sx={{ '.MuiListItemText-primary': { display: 'inline-block' } }} className="visually-hidden" />
               </ListItemButton>
             </Tooltip>
           );
@@ -121,6 +123,7 @@ export default function Layout({ children }: PropsWithChildren) {
               edge="start"
               color="inherit"
               onClick={() => setMobileOpen(true)}
+              aria-label="Open navigation menu"
               sx={{ mr: 1 }}
             >
               <MenuIcon />

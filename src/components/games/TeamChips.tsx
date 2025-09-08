@@ -6,11 +6,12 @@ interface Props {
   getPlayerName: (id: string) => string;
   deltaLookup?: (id: string) => number | undefined;
   winner?: boolean; // true = mark as winners (green), false = losers (red)
+  maxChipWidth?: number;
 }
 
 import React from "react";
 
-function TeamChipsInner({ ids, getPlayerName, deltaLookup, winner }: Props) {
+function TeamChipsInner({ ids, getPlayerName, deltaLookup, winner, maxChipWidth }: Props) {
   const color = winner === undefined ? undefined : (winner ? "success" : "error");
   return (
     <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
@@ -21,6 +22,7 @@ function TeamChipsInner({ ids, getPlayerName, deltaLookup, winner }: Props) {
           name={getPlayerName(id)}
           delta={deltaLookup ? deltaLookup(id) : undefined}
           colorOverride={color}
+          maxWidth={maxChipWidth ?? 140}
         />
       ))}
     </Stack>

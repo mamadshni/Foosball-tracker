@@ -13,9 +13,16 @@ export default function GamesTable({ games, getPlayerName }: Props) {
   const deltaLookup = (g: Game) => (id: string) => (g.perPlayerDeltas?.[id] ?? undefined);
 
   return (
-    <Paper>
-      <TableContainer>
-        <Table size="small" stickyHeader>
+    <Paper sx={{ overflow: 'hidden' }}>
+      <TableContainer sx={{ overflow: 'hidden' }}>
+        <Table
+          size="small"
+          stickyHeader
+          aria-label="Games table"
+          sx={{
+            '& .MuiTableRow-root:last-of-type .MuiTableCell-root': { borderBottom: 0 },
+          }}
+        >
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>

@@ -44,8 +44,9 @@ export function PlayerOverviewCard({
   return (
     <Card>
       <CardHeader
+        sx={{ '& .MuiCardHeader-content': { minWidth: 0 } }}
         avatar={<Avatar>{initial(player.name)}</Avatar>}
-        title={<Typography variant="h5" fontWeight={700}>{player.name}</Typography>}
+        title={<Typography variant="h5" fontWeight={700} noWrap title={player.name} sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{player.name}</Typography>}
         subheader={<Typography color="text.secondary">Player Overview</Typography>}
       />
       <Divider />
@@ -86,6 +87,7 @@ export function PlayerOverviewCard({
               to={mostPlayedWith ? `/players/${mostPlayedWith.id}` : undefined}
               clickable={!!mostPlayedWith}
               variant="outlined"
+              sx={{ '.MuiChip-label': { maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis' } }}
             />
             <Chip
               avatar={<Avatar>{initial(mostPlayedAgainst?.name)}</Avatar>}
@@ -94,6 +96,7 @@ export function PlayerOverviewCard({
               to={mostPlayedAgainst ? `/players/${mostPlayedAgainst.id}` : undefined}
               clickable={!!mostPlayedAgainst}
               variant="outlined"
+              sx={{ '.MuiChip-label': { maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis' } }}
             />
           </Stack>
 

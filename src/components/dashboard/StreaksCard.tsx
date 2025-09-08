@@ -32,10 +32,27 @@ export default function StreaksCard({ players, games, limit = 5 }: Props) {
           <Stack flex={1} spacing={1}>
             <Typography variant="subtitle2" color="success.main">Hot Streaks</Typography>
             {hot.length === 0 && <Typography color="text.secondary">No active win streaks</Typography>}
-            {hot.map(({ p, s }) => (
-              <Stack key={p.id} direction="row" spacing={1} alignItems="center">
+            {hot.map(({ p, s }, idx) => (
+              <Stack key={p.id} direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0, py: 0.75, ...(idx > 0 ? { borderTop: '1px solid', borderColor: 'divider' } : {}) }}>
                 <Avatar component={RouterLink} to={`/players/${p.id}`} sx={{ textDecoration: 'none' }}>{initial(p.name)}</Avatar>
-                <Typography component={RouterLink} to={`/players/${p.id}`} flex={1} fontWeight={600} sx={{ textDecoration: 'none', color: 'inherit' }}>{p.name}</Typography>
+                <Typography
+                  component={RouterLink}
+                  to={`/players/${p.id}`}
+                  flex={1}
+                  fontWeight={600}
+                  sx={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    minWidth: 0,
+                    maxWidth: { xs: 120, sm: 160, md: 220 },
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                  }}
+                  title={p.name}
+                >
+                  {p.name}
+                </Typography>
                 <Typography color="success.main" fontWeight={700}>{`${s.length} W`}</Typography>
               </Stack>
             ))}
@@ -43,10 +60,27 @@ export default function StreaksCard({ players, games, limit = 5 }: Props) {
           <Stack flex={1} spacing={1}>
             <Typography variant="subtitle2" color="error.main">Cold Streaks</Typography>
             {cold.length === 0 && <Typography color="text.secondary">No active losing streaks</Typography>}
-            {cold.map(({ p, s }) => (
-              <Stack key={p.id} direction="row" spacing={1} alignItems="center">
+            {cold.map(({ p, s }, idx) => (
+              <Stack key={p.id} direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0, py: 0.75, ...(idx > 0 ? { borderTop: '1px solid', borderColor: 'divider' } : {}) }}>
                 <Avatar component={RouterLink} to={`/players/${p.id}`} sx={{ textDecoration: 'none' }}>{initial(p.name)}</Avatar>
-                <Typography component={RouterLink} to={`/players/${p.id}`} flex={1} fontWeight={600} sx={{ textDecoration: 'none', color: 'inherit' }}>{p.name}</Typography>
+                <Typography
+                  component={RouterLink}
+                  to={`/players/${p.id}`}
+                  flex={1}
+                  fontWeight={600}
+                  sx={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    minWidth: 0,
+                    maxWidth: { xs: 120, sm: 160, md: 220 },
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                  }}
+                  title={p.name}
+                >
+                  {p.name}
+                </Typography>
                 <Typography color="error.main" fontWeight={700}>{`${s.length} L`}</Typography>
               </Stack>
             ))}

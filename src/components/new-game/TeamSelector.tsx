@@ -30,11 +30,16 @@ export default function TeamSelector({ label, value, options, limit, onChange }:
       {value.length > 0 && (
         <Stack direction="row" spacing={1} sx={{ mt: 1 }} flexWrap="wrap">
           {value.map((p) => (
-            <Chip key={p.id} label={p.name} onDelete={() => onChange(value.filter((x) => x.id !== p.id))} />
+            <Chip
+              key={p.id}
+              label={p.name}
+              onDelete={() => onChange(value.filter((x) => x.id !== p.id))}
+              title={p.name}
+              sx={{ '.MuiChip-label': { maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis' } }}
+            />
           ))}
         </Stack>
       )}
     </Box>
   );
 }
-

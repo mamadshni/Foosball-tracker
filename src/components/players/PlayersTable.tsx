@@ -1,4 +1,5 @@
-import { Avatar, Chip, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, Typography, Stack } from "@mui/material";
+import { Avatar, Chip, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, Typography, Stack, TableSortLabel } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import type { Player } from "../../types/models";
 
 interface Props {
@@ -6,30 +7,59 @@ interface Props {
   orderBy: keyof Player;
   order: "asc" | "desc";
   onRequestSort: (field: keyof Player) => void;
-  onRowClick: (id: string) => void;
 }
 
-export default function PlayersTable({ players, orderBy, order, onRequestSort, onRowClick }: Props) {
+export default function PlayersTable({ players, orderBy, order, onRequestSort }: Props) {
   const initial = (name: string) => (name ? name.charAt(0).toUpperCase() : "?");
   return (
     <TableContainer>
-      <Table size="small" stickyHeader data-order={order}>
+      <Table size="small" stickyHeader data-order={order} aria-label="Players table">
         <TableHead>
           <TableRow>
-            <TableCell onClick={() => onRequestSort("name")} sx={{ cursor: "pointer", fontWeight: orderBy === "name" ? "bold" : "normal" }}>
-              Name
+            <TableCell sortDirection={orderBy === 'name' ? order : false}>
+              <TableSortLabel
+                active={orderBy === 'name'}
+                direction={orderBy === 'name' ? order : 'asc'}
+                onClick={() => onRequestSort('name')}
+              >
+                Name
+              </TableSortLabel>
             </TableCell>
-            <TableCell onClick={() => onRequestSort("rating")} sx={{ cursor: "pointer", fontWeight: orderBy === "rating" ? "bold" : "normal" }}>
-              Rating
+            <TableCell sortDirection={orderBy === 'rating' ? order : false}>
+              <TableSortLabel
+                active={orderBy === 'rating'}
+                direction={orderBy === 'rating' ? order : 'desc'}
+                onClick={() => onRequestSort('rating')}
+              >
+                Rating
+              </TableSortLabel>
             </TableCell>
-            <TableCell onClick={() => onRequestSort("gamesPlayed")} sx={{ cursor: "pointer", fontWeight: orderBy === "gamesPlayed" ? "bold" : "normal" }}>
-              Games
+            <TableCell sortDirection={orderBy === 'gamesPlayed' ? order : false}>
+              <TableSortLabel
+                active={orderBy === 'gamesPlayed'}
+                direction={orderBy === 'gamesPlayed' ? order : 'desc'}
+                onClick={() => onRequestSort('gamesPlayed')}
+              >
+                Games
+              </TableSortLabel>
             </TableCell>
-            <TableCell onClick={() => onRequestSort("wins")} sx={{ cursor: "pointer", fontWeight: orderBy === "wins" ? "bold" : "normal" }}>
-              Wins
+            <TableCell sortDirection={orderBy === 'wins' ? order : false}>
+              <TableSortLabel
+                active={orderBy === 'wins'}
+                direction={orderBy === 'wins' ? order : 'desc'}
+                onClick={() => onRequestSort('wins')}
+              >
+                Wins
+              </TableSortLabel>
             </TableCell>
-            <TableCell onClick={() => onRequestSort("losses")} sx={{ cursor: "pointer", fontWeight: orderBy === "losses" ? "bold" : "normal" }}>
-              Losses
+            <TableCell sortDirection={orderBy === 'losses' ? order : false}>
+              <TableSortLabel
+                active={orderBy === 'losses'}
+                direction={orderBy === 'losses' ? order : 'desc'}
+                onClick={() => onRequestSort('losses')}
+              >
+                Losses
+              </TableSortLabel>
             </TableCell>
             <TableCell>Win Rate</TableCell>
           </TableRow>
@@ -38,11 +68,20 @@ export default function PlayersTable({ players, orderBy, order, onRequestSort, o
           {players.map((p) => {
             const winRate = p.gamesPlayed > 0 ? Math.round((p.wins / p.gamesPlayed) * 100) : 0;
             return (
-              <TableRow key={p.id} hover sx={{ cursor: "pointer" }} onClick={() => onRowClick(p.id)}>
-                <TableCell>
-                  <Stack direction="row" spacing={1} alignItems="center">
+              <TableRow key={p.id} hover sx={{ cursor: "pointer" }}>
+                <TableCell sx={{ maxWidth: 0 }}>
+                  <Stack
+                    component={RouterLink}
+                    to={`/players/${p.id}`}
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                    sx={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
+                  >
                     <Avatar>{initial(p.name)}</Avatar>
-                    <Typography fontWeight={600}>{p.name}</Typography>
+                    <Typography fontWeight={600} sx={{ minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} title={p.name}>
+                      {p.name}
+                    </Typography>
                   </Stack>
                 </TableCell>
                 <TableCell>

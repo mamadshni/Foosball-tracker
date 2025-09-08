@@ -101,10 +101,12 @@ export default function PlayerDetail() {
 
     return (
         <Box>
-            <Breadcrumbs sx={{ mb: 2 }} aria-label="breadcrumb">
+            <Breadcrumbs sx={{ mb: 2, minWidth: 0 }} aria-label="breadcrumb">
                 <MUILink component={RouterLink} to="/">Dashboard</MUILink>
                 <MUILink component={RouterLink} to="/players">Players</MUILink>
-                <Typography color="text.primary">{player.name}</Typography>
+                <Typography color="text.primary" title={player.name} sx={{ display: 'inline-block', maxWidth: { xs: '45vw', md: 300 }, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {player.name}
+                </Typography>
             </Breadcrumbs>
             <Stack spacing={3} direction={{ xs: "column", md: "row" }}>
                 <Box sx={{ width: { xs: "100%", md: 380 }, flexShrink: 0 }}>

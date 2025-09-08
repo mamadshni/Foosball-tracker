@@ -21,8 +21,8 @@ export function PlayerHistoryCard({ playerId, playerName, playerGames, getPlayer
       />
       <Divider />
       <CardContent sx={{ p: 0 }}>
-        <TableContainer sx={{ maxHeight: 480 }}>
-          <Table size="small" stickyHeader>
+        <TableContainer sx={{ maxHeight: { xs: '52vh', md: '64vh', lg: '70vh' } }}>
+          <Table size="small" stickyHeader aria-label="Player game history">
             <TableHead>
               <TableRow>
                 <TableCell sx={{ width: 110 }}>Date</TableCell>
@@ -48,14 +48,14 @@ export function PlayerHistoryCard({ playerId, playerName, playerGames, getPlayer
                     <TableCell>
                       <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                         {teammates.map((id) => (
-                          <PlayerChip key={id} id={id} name={getPlayerName(id)} colorOverride={isWin ? "success" : "error"} />
+                          <PlayerChip key={id} id={id} name={getPlayerName(id)} colorOverride={isWin ? "success" : "error"} maxWidth={140} />
                         ))}
                       </Stack>
                     </TableCell>
                     <TableCell>
                       <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                         {opponents.map((id) => (
-                          <PlayerChip key={id} id={id} name={getPlayerName(id)} colorOverride={isWin ? "error" : "success"} />
+                          <PlayerChip key={id} id={id} name={getPlayerName(id)} colorOverride={isWin ? "error" : "success"} maxWidth={140} />
                         ))}
                       </Stack>
                     </TableCell>

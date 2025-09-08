@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Divider, Stack, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Divider, Typography } from "@mui/material";
 import type { Game } from "../../types/models";
 import TeamChips from "../games/TeamChips";
 import { formatDate } from "../../lib/format/date";
@@ -16,16 +16,29 @@ export default function RecentGamesCard({ games, getPlayerName, limit = 5 }: Pro
       <CardHeader title={<Typography variant="h6">Recent Games</Typography>} />
       <Divider />
       <CardContent>
-        <Stack spacing={1.5}>
-          {recent.map((g) => (
-            <Stack key={g.id} direction="row" alignItems="center" spacing={1} flexWrap="wrap" useFlexGap>
-              <Typography color="text.secondary" sx={{ minWidth: 95 }}>{formatDate(g.date)}</Typography>
-              <TeamChips ids={g.winnerTeam === 'A' ? g.teamA : g.teamB} getPlayerName={getPlayerName} winner />
-              <Typography color="text.secondary">def.</Typography>
-              <TeamChips ids={g.winnerTeam === 'A' ? g.teamB : g.teamA} getPlayerName={getPlayerName} winner={false} />
-            </Stack>
-          ))}
-        </Stack>
+        {recent.map((g, idx) => {
+          const winners = g.winnerTeam === 'A' ? g.teamA : g.teamB;
+          const losers = g.winnerTeam === 'A' ? g.teamB : g.teamA;
+          return (
+            <Box
+              key={g.id}
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '84px 1fr 1fr', sm: '95px 1fr auto 1fr' },
+                alignItems: 'center',
+                columnGap: 1,
+                rowGap: 1,
+                py: 0.75,
+                ...(idx > 0 ? { borderTop: '1px solid', borderColor: 'divider' } : {}),
+              }}
+            >
+              <Typography color="text.secondary">{formatDate(g.date)}</Typography>
+              <TeamChips ids={winners} getPlayerName={getPlayerName} winner />
+              <Typography color="text.secondary" sx={{ textAlign: 'center', display: { xs: 'none', sm: 'block' } }}>def.</Typography>
+              <TeamChips ids={losers} getPlayerName={getPlayerName} winner={false} />
+            </Box>
+          );
+        })}
       </CardContent>
     </Card>
   );

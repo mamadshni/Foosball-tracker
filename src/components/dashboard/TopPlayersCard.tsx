@@ -15,14 +15,24 @@ export default function TopPlayersCard({ players, limit = 5 }: Props) {
       <CardHeader title={<Typography variant="h6">Top Players</Typography>} />
       <Divider />
       <CardContent>
-        <Stack spacing={1.5}>
+        <Stack>
           {top.map((p, idx) => (
-            <Stack key={p.id} direction="row" alignItems="center" spacing={1.5}>
+            <Stack
+              key={p.id}
+              direction="row"
+              alignItems="center"
+              spacing={1.5}
+              sx={{
+                minWidth: 0,
+                py: 0.75,
+                ...(idx > 0 ? { borderTop: '1px solid', borderColor: 'divider' } : {}),
+              }}
+            >
               <Typography width={20} color="text.secondary">{idx + 1}</Typography>
               <Avatar component={RouterLink} to={`/players/${p.id}`} sx={{ textDecoration: 'none' }}>
                 {initial(p.name)}
               </Avatar>
-              <Typography component={RouterLink} to={`/players/${p.id}`} flex={1} fontWeight={600} sx={{ textDecoration: 'none', color: 'inherit' }}>
+              <Typography component={RouterLink} to={`/players/${p.id}`} flex={1} fontWeight={600} sx={{ textDecoration: 'none', color: 'inherit', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={p.name}>
                 {p.name}
               </Typography>
               <Typography fontWeight={700}>{p.rating}</Typography>

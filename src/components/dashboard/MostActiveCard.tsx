@@ -23,11 +23,11 @@ export default function MostActiveCard({ players, games, days = 14, limit = 5 }:
       <CardHeader title={<Typography variant="h6">Most Active (last {days} days)</Typography>} />
       <Divider />
       <CardContent>
-        <Stack spacing={1.5}>
-          {ranked.map(({ p, c }) => (
-            <Stack key={p.id} direction="row" alignItems="center" spacing={1.5}>
+        <Stack>
+          {ranked.map(({ p, c }, idx) => (
+            <Stack key={p.id} direction="row" alignItems="center" spacing={1.5} sx={{ minWidth: 0, py: 0.75, ...(idx > 0 ? { borderTop: '1px solid', borderColor: 'divider' } : {}) }}>
               <Avatar component={RouterLink} to={`/players/${p.id}`} sx={{ textDecoration: 'none' }}>{initial(p.name)}</Avatar>
-              <Typography component={RouterLink} to={`/players/${p.id}`} flex={1} fontWeight={600} sx={{ textDecoration: 'none', color: 'inherit' }}>{p.name}</Typography>
+              <Typography component={RouterLink} to={`/players/${p.id}`} flex={1} fontWeight={600} sx={{ textDecoration: 'none', color: 'inherit', minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} title={p.name}>{p.name}</Typography>
               <Typography color="text.secondary">{c} games</Typography>
             </Stack>
           ))}

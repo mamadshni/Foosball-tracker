@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Box, Typography, Stack } from "@mui/material";
 import { usePlayersStore } from "../store/players";
-import { useNavigate } from "react-router-dom";
 import type { Player } from "../types/models";
 import PlayersTable from "../components/players/PlayersTable";
 import AddPlayerDialog from "../components/players/AddPlayerDialog";
@@ -12,7 +11,6 @@ export default function PlayersList() {
     const players = usePlayersStore((state) => state.players);
     const addPlayer = usePlayersStore((state) => state.addPlayer);
 
-    const navigate = useNavigate();
 
     const [open, setOpen] = useState(false);
 
@@ -55,7 +53,6 @@ export default function PlayersList() {
                 orderBy={orderBy}
                 order={order}
                 onRequestSort={handleSort}
-                onRowClick={(id) => navigate(`/players/${id}`)}
             />
 
             <AddPlayerDialog open={open} onClose={() => setOpen(false)} onAdd={handleAdd} />

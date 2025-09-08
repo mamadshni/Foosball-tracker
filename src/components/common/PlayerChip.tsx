@@ -1,4 +1,5 @@
 import { Avatar, Chip } from "@mui/material";
+import type { ChipProps } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -9,12 +10,13 @@ interface Props {
   size?: "small" | "medium";
   variant?: "outlined" | "filled";
   showAvatar?: boolean;
-  colorOverride?: "default" | "success" | "error";
+  colorOverride?: ChipProps["color"];
+  maxWidth?: number; // max width of chip in px (root). If provided, label width adjusts accordingly
 }
 
 const initial = (name?: string) => (name ? name.charAt(0).toUpperCase() : "?");
 
-function PlayerChipInner({ id, name, delta, size = "small", variant = "outlined", showAvatar = true, colorOverride }: Props) {
+function PlayerChipInner({ id, name, delta, size = "small", variant = "outlined", showAvatar = true, colorOverride, maxWidth }: Props) {
   const theme = useTheme();
   const hasDelta = typeof delta === "number";
   const positive = (delta ?? 0) >= 0;
@@ -23,7 +25,7 @@ function PlayerChipInner({ id, name, delta, size = "small", variant = "outlined"
   const tone = colorOverride
     ? (colorOverride === "success" ? theme.palette.success.main : theme.palette.error.main)
     : undefined;
-  const color = colorOverride ? undefined : (hasDelta ? (positive ? "success" : "error") : undefined);
+  const color: ChipProps["color"] | undefined = colorOverride ? undefined : (hasDelta ? (positive ? "success" : "error") : undefined);
   const resolvedVariant = variant; // keep outlined look; tint via sx below when colorOverride is set
   const sx = colorOverride
     ? {
@@ -32,17 +34,31 @@ function PlayerChipInner({ id, name, delta, size = "small", variant = "outlined"
         color: theme.palette.text.primary,
       }
     : undefined;
+  const rootMaxWidth = maxWidth ?? undefined;
+  const labelMaxWidth = typeof rootMaxWidth === 'number' ? Math.max(60, rootMaxWidth - 56) : undefined;
+
   return (
     <Chip
       size={size}
       avatar={showAvatar ? <Avatar>{initial(name)}</Avatar> : undefined}
       label={label}
+      title={label}
       component={RouterLink}
       to={`/players/${id}`}
       clickable
       variant={resolvedVariant}
       color={color as any}
-      sx={sx}
+      sx={{
+        ...sx,
+        maxWidth: rootMaxWidth ?? { xs: 140, sm: 180, md: 200 },
+        '.MuiChip-label': {
+          display: 'block',
+          maxWidth: labelMaxWidth ?? { xs: 96, sm: 136, md: 156 },
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        },
+      }}
     />
   );
 }

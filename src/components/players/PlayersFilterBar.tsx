@@ -41,7 +41,7 @@ export default function PlayersFilterBar({ onAddClick }: Props) {
           </Select>
         </FormControl>
         <Tooltip title={sortDir === "desc" ? "Descending" : "Ascending"}>
-          <IconButton onClick={() => setSortDir(sortDir === "desc" ? "asc" : "desc")}>
+          <IconButton aria-label="Toggle sort direction" onClick={() => setSortDir(sortDir === "desc" ? "asc" : "desc")}>
             <SwapVertIcon />
           </IconButton>
         </Tooltip>
@@ -50,4 +50,3 @@ export default function PlayersFilterBar({ onAddClick }: Props) {
     </Paper>
   );
 }
-
